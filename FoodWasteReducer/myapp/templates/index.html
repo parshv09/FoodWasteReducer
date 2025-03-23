@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}  <!-- Load static files -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Waste Reducer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">  <!-- Link CSS file -->
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="{% static 'images/foodLogo.jpg' %}" alt="Food Waste Reducer Logo" class="logo">  <!-- Load image -->
+            <h1>Food Waste Reducer</h1>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h2>Join the Movement to Reduce Food Waste!</h2>
+            <p>Enter your food details and get recipes to use up what you have before it goes to waste.</p>
+            <div id="auth-buttons">
+                <a href="{% url 'login' %}" class="cta-btn">Login Here</a>
+                <p>Not registered? <a href="{% url 'register' %}">Register Here</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Contact us: <a href="mailto:foodreducer@gmail.com">foodreducer@gmail.com</a></p>
+        <div class="footer-links">
+            <a href="{% url 'about' %}">About</a> | 
+            <a href="{% url 'privacy' %}">Privacy Policy</a>
+        </div>
+    </footer>
+</body>
+</html>

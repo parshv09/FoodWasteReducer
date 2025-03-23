@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Food Waste Reducer</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Food Waste Reducer</h1>
+    </header>
+
+    <main>
+        <section class="about">
+            <div class="about-container">
+                <h2>Our Mission</h2>
+                <p>At Food Waste Reducer, we are dedicated to reducing food waste by helping individuals and businesses make better decisions about their food usage. Our mission is to raise awareness and offer practical solutions to prevent food waste in our communities.</p>
+            </div>
+
+            <div class="about-container">
+                <h2>Our Vision</h2>
+                <p>We envision a world where food waste is minimized, and people are empowered to make sustainable choices. By providing helpful tools and resources, we aim to foster a more sustainable future for all.</p>
+            </div>
+
+            <div class="about-container">
+                <h2>How You Can Help</h2>
+                <p>You can help by using our platform to track your food, donate surplus food, or adopt sustainable practices like meal planning and composting. Together, we can make a difference!</p>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2>Join the Movement</h2>
+            <p>Take action today and make a positive impact by joining our community. Sign up for our services and help us reduce food waste!</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Contact us:<a href="mailto:foodreducer@gmail.com">foodreducer@gmail.com</a></p>
+        <p><a href="{% url 'about' %}">About Us</a> | <a href="{% url 'privacy' %}">Privacy Policy</a></p>
+    </footer>
+</body>
+</html>

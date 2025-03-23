@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Details - Food Waste Reducer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">  
+    <script>
+        function addFoodItem() {
+            const foodItemSection = document.querySelector('.food-details-form-container');
+            const newFoodDetailsForm = document.createElement('div');
+            newFoodDetailsForm.classList.add('food-details-form');
+
+            const newFoodItemGroup = document.createElement('div');
+            newFoodItemGroup.classList.add('form-group');
+            newFoodItemGroup.innerHTML = `
+                <label for="food-item">Food Item</label>
+                <input type="text" name="food-item" placeholder="Enter food item">
+            `;
+            newFoodDetailsForm.appendChild(newFoodItemGroup);
+
+            const newPurchaseDateGroup = document.createElement('div');
+            newPurchaseDateGroup.classList.add('form-group');
+            newPurchaseDateGroup.innerHTML = `
+                <label for="purchase-date">Purchase Date</label>
+                <input type="date" name="purchase-date">
+            `;
+            newFoodDetailsForm.appendChild(newPurchaseDateGroup);
+
+            const newQuantityGroup = document.createElement('div');
+            newQuantityGroup.classList.add('form-group');
+            newQuantityGroup.innerHTML = `
+                <label for="quantity">Quantity</label>
+                <input type="number" name="quantity">
+            `;
+            newFoodDetailsForm.appendChild(newQuantityGroup);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('delete-btn');
+            deleteButton.textContent = 'Delete Item';
+            deleteButton.onclick = function() {
+                newFoodDetailsForm.remove();
+            };
+            newFoodDetailsForm.appendChild(deleteButton);
+            foodItemSection.appendChild(newFoodDetailsForm);
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="{% static 'images/foodLogo.jpg' %}" alt="Food Waste Reducer Logo" class="logo">
+            <h1>Food Waste Reducer</h1>
+        </div>
+    </header>
+
+    <main>
+        <section class="food-details-form-container">
+            <h2>Enter Your Food Details</h2>
+            <div class="food-details-form">
+                <div class="form-group">
+                    <label for="food-item">Food Item</label>
+                    <input type="text" name="food-item" placeholder="Enter food item">
+                </div>
+                <div class="form-group">
+                    <label for="purchase-date">Purchase Date</label>
+                    <input type="date" name="purchase-date">
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" name="quantity">
+                </div>
+                <button type="button" class="delete-btn" onclick="this.parentElement.remove()">Delete Item</button>
+            </div>
+        </section>
+        <div class="form-buttons">
+            <button type="button" class="cta-btn" onclick="addFoodItem()">Add Food Item</button>
+            <a href="">
+                <button class="cta1-btn" onclick="">Save Items</button>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <p>Contact us:<a href="mailto:foodreducer@gmail.com">foodreducer@gmail.com</a></p>
+        <div class="footer-links">
+            <a href="{% url 'about' %}">About</a> | 
+            <a href="{% url 'privacy' %}">Privacy Policy</a>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Waste Reducer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">  
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="{% static 'images/foodLogo.jpg' %}" alt="Food Waste Reducer Logo" class="logo">
+            <h1>Food Waste Reducer</h1>
+            
+        </div>  
+        <div> <a href="{% url 'logout' %}" class="logout">logout</a></div>    
+    </header>
+
+    <section class="features">
+        <div class="feature">
+            <h3>Get Recipe Suggestions</h3>
+            <p>Get tasty recipes based on your ingredients, saving food from waste.</p>
+            <a href="{% url 'food_details' %}">
+                <button class="add">Suggest Recipes</button>
+            </a>
+        </div>
+        <div class="feature">
+            <h3>Food Inventory</h3>
+            <p>Tell us what you have and get Notification of Expiration</p>
+            <a href="{% url 'inventory' %}">
+                <button class="add">Add</button>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>Contact us:<a href="mailto:foodreducer@gmail.com">foodreducer@gmail.com</a></p>
+        <div class="footer-links">
+            <a href="{% url 'about' %}">About</a> | 
+            <a href="{% url 'privacy' %}">Privacy Policy</a>
+        </div>
+    </footer>
+</body>
+</html>

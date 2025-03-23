@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Food Waste Reducer</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="{% static 'images/foodLogo.jpg' %}" alt="Food Waste Reducer Logo" class="logo">
+            <h1>Food Waste Reducer</h1>
+        </div>
+    </header>
+
+    <main>
+        <section class="auth-container">
+            <div class="auth-form">
+                <h2>Create an Account</h2>
+                <!-- Show Messages -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="message">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" placeholder="Enter a username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm Password</label>
+                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+                    </div>
+                    <button type="submit" class="cta-btn">Register</button>
+                </form>
+                <p>Already a member? <a href="{% url 'login' %}">Login here</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Contact us: <a href="mailto:foodreducer@gmail.com">foodreducer@gmail.com</a></p>
+    </footer>
+</body>
+</html>
