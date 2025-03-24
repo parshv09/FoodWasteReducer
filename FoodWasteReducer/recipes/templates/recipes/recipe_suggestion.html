@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Suggestions</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .recipe-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+        .recipe-card {
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            background: #f9f9f9;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .recipe-card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .recipe-card h4 {
+            margin: 10px 0;
+            color: #333;
+        }
+        .recipe-card p {
+            font-size: 14px;
+            color: #666;
+        }
+        .instructions {
+            text-align: left;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Food Waste Reducer</h1>
+    </header>
+
+    <main>
+        <h2>Suggested Recipes</h2>
+        {% if ingredients %}
+            <p>Based on the ingredients: <strong>{{ ingredients }}</strong></p>
+        {% endif %}
+
+        <!-- Display API recipes -->
+        {% if recipes_api %}
+            <h3>Recipes from External API</h3>
+            <div class="recipe-container">
+                {% for recipe in recipes_api %}
+                    <section class="recipe-card">
+                        <h4>{{ recipe.title }}</h4>
+                        {% if recipe.image %}
+                            <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
+                        {% endif %}
+                        <p class="instructions"><strong>Instructions:</strong></p>
+                        <div class="instruction-text">{{ recipe.instructions|linebreaks }}</div>
+                        
+                    </section>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Display local recipes -->
+        {% if recipes_local %}
+            <h3>Your Custom Recipes</h3>
+            <div class="recipe-container">
+                {% for recipe in recipes_local %}
+                    <section class="recipe-card">
+                        <h4>{{ recipe.name }}</h4>
+                        {% if recipe.image_url %}
+                            <img src="{{ recipe.image_url }}" alt="{{ recipe.name }}">
+                        {% endif %}
+                        <p class="instructions"><strong>Instructions:</strong> {{ recipe.instructions|safe }}</p>
+                    </section>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </main>
+
+    <footer>
+        <p>Contact us: <a href="mailto:foodreducer@gmail.com">foodreducer@gmail.com</a></p>
+    </footer>
+</body>
+</html>
