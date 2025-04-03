@@ -15,9 +15,6 @@ def about(request):
 def contact(request):
     return render(request, 'contact.html')
 
-def inventory(request):
-    return render(request, 'inventory.html')
-
 
 def login_view(request):
     if request.method == 'POST':

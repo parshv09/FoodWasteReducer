@@ -16,9 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from inventory import views as inventory_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('myapp.urls')),  # Connect app URLs
-    path('recipes/',include('recipes.urls'))
+    path('recipes/',include('recipes.urls')),
+    path('inventory/', include('inventory.urls')),
+    path('inventory/dashboard/', inventory_views.inventory_dashboard, name='inventory_dashboard'),
 ]

@@ -9,3 +9,4 @@ def contact(request):
 
 def about(request):
     return HttpResponse("about us")
+

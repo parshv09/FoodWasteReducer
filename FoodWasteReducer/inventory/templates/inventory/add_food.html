@@ -1,0 +1,270 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Food Items - Food Waste Reducer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0fdf4;
+        }
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+        .form-input:focus {
+            box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2);
+        }
+        .food-form {
+            transition: all 0.3s ease;
+        }
+        .food-form:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Animated Header -->
+    <header class="bg-green-800 text-white shadow-lg animate__animated animate__fadeInDown">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <img src="{% static 'images/logo.png' %}" alt="Food Waste Reducer Logo" class="h-10 w-10">
+                    <h1 class="title-font text-xl md:text-2xl font-bold">Food Waste Reducer</h1>
+                </div>
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="{% url 'inventory:dashboard' %}" class="text-green-100 hover:text-white transition">Inventory</a>
+                    <a href="" class="text-green-100 hover:text-white transition">Recipes</a>
+                    <a href="{% url 'logout' %}" class="text-green-100 hover:text-white transition">Logout</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <!-- Hero Section -->
+        <div class="bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl p-8 mb-12 text-white animate__animated animate__fadeIn">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="mb-6 md:mb-0">
+                    <h2 class="title-font text-3xl md:text-4xl font-bold mb-4">Track Your Food Items</h2>
+                    <p class="text-lg">Add your groceries to prevent waste and get smart usage suggestions</p>
+                </div>
+                <img src="{% static 'images/food-tracking.png' %}" alt="Food tracking illustration" class="h-32 md:h-40 floating">
+            </div>
+        </div>
+
+        <!-- Food Form Container -->
+        <form method="POST" action="" class="animate__animated animate__fadeIn">
+            {% csrf_token %}
+            <div id="foodItemsContainer" class="space-y-6 mb-8">
+                <!-- Initial Food Item Form -->
+                <div class="food-form bg-white rounded-xl shadow-md p-6 border border-green-100">
+                    <h3 class="text-lg font-bold text-green-800 mb-4 flex items-center">
+                        <svg class="w-5 h-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Food Item #1
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+                        <div>
+                            <label for="food-item-1" class="block text-sm font-medium text-gray-700 mb-1">Food Name</label>
+                            <input type="text" id="food-item-1" name="food-item" 
+                                   class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" 
+                                   placeholder="e.g., Apples, Milk" required>
+                        </div>
+                        <div>
+                            <label for="category-1" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                            <select id="category-1" name="category" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
+                                <option value="FRUIT">Fruits</option>
+                                <option value="VEG">Vegetables</option>
+                                <option value="DAIRY">Dairy</option>
+                                <option value="MEAT">Meat</option>
+                                <option value="GRAIN">Grains</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="quantity-1" class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                            <input type="text" id="quantity-1" name="quantity" 
+                                   class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" 
+                                   placeholder="e.g., 2 lbs, 5 pieces" required>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                        <div>
+                            <label for="purchase-date-1" class="block text-sm font-medium text-gray-700 mb-1">Purchase Date</label>
+                            <input type="date" id="purchase-date-1" name="purchase-date" 
+                                   class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" required>
+                        </div>
+                        <div>
+                            <label for="expiry-date-1" class="block text-sm font-medium text-gray-700 mb-1">Expiry Date</label>
+                            <input type="date" id="expiry-date-1" name="expiry-date" 
+                                   class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="notes-1" class="block text-sm font-medium text-gray-700 mb-1">Notes (Optional)</label>
+                        <textarea id="notes-1" name="notes" rows="2" 
+                                  class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" 
+                                  placeholder="Storage tips, special instructions..."></textarea>
+                    </div>
+                    
+                    <button type="button" onclick="this.parentElement.remove()" 
+                            class="text-red-600 hover:text-red-800 font-medium text-sm flex items-center">
+                        <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        Remove This Item
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button type="button" onclick="addFoodItem()" 
+                        class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition transform hover:scale-105 flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Add Another Item
+                </button>
+                
+                <button type="submit" 
+                        class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition transform hover:scale-105 flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Save All Items
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-green-900 text-green-100 py-8">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                    <img src="{% static 'images/logo-white.png' %}" alt="Food Waste Reducer Logo" class="h-8 w-8">
+                    <span class="title-font">Food Waste Reducer</span>
+                </div>
+                <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-sm">
+                    <a href="{% url 'about' %}" class="hover:text-white transition">About</a>
+                    <a href="{% url 'privacy' %}" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="mailto:foodreducer@gmail.com" class="hover:text-white transition">Contact Us</a>
+                </div>
+            </div>
+            <div class="mt-6 text-center text-xs text-green-300">
+                &copy; 2023 Food Waste Reducer. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let itemCount = 1;
+
+        function addFoodItem() {
+            itemCount++;
+            const container = document.getElementById('foodItemsContainer');
+            
+            const newForm = document.createElement('div');
+            newForm.className = 'food-form bg-white rounded-xl shadow-md p-6 border border-green-100 animate__animated animate__fadeIn';
+            newForm.innerHTML = `
+                <h3 class="text-lg font-bold text-green-800 mb-4 flex items-center">
+                    <svg class="w-5 h-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Food Item #${itemCount}
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+                    <div>
+                        <label for="food-item-${itemCount}" class="block text-sm font-medium text-gray-700 mb-1">Food Name</label>
+                        <input type="text" id="food-item-${itemCount}" name="food-item" 
+                               class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" 
+                               placeholder="e.g., Apples, Milk" required>
+                    </div>
+                    <div>
+                        <label for="category-${itemCount}" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                        <select id="category-${itemCount}" name="category" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
+                            <option value="FRUIT">Fruits</option>
+                            <option value="VEG">Vegetables</option>
+                            <option value="DAIRY">Dairy</option>
+                            <option value="MEAT">Meat</option>
+                            <option value="GRAIN">Grains</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="quantity-${itemCount}" class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                        <input type="text" id="quantity-${itemCount}" name="quantity" 
+                               class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" 
+                               placeholder="e.g., 2 lbs, 5 pieces" required>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                    <div>
+                        <label for="purchase-date-${itemCount}" class="block text-sm font-medium text-gray-700 mb-1">Purchase Date</label>
+                        <input type="date" id="purchase-date-${itemCount}" name="purchase-date" 
+                               class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" required>
+                    </div>
+                    <div>
+                        <label for="expiry-date-${itemCount}" class="block text-sm font-medium text-gray-700 mb-1">Expiry Date</label>
+                        <input type="date" id="expiry-date-${itemCount}" name="expiry-date" 
+                               class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" required>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="notes-${itemCount}" class="block text-sm font-medium text-gray-700 mb-1">Notes (Optional)</label>
+                    <textarea id="notes-${itemCount}" name="notes" rows="2" 
+                              class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" 
+                              placeholder="Storage tips, special instructions..."></textarea>
+                </div>
+                
+                <button type="button" onclick="this.parentElement.remove()" 
+                        class="text-red-600 hover:text-red-800 font-medium text-sm flex items-center">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                    Remove This Item
+                </button>
+            `;
+            
+            container.appendChild(newForm);
+            // Trigger the animation
+            setTimeout(() => {
+                newForm.classList.add('animate__fadeIn');
+            }, 10);
+        }
+
+        // Set default dates
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            const nextWeek = new Date();
+            nextWeek.setDate(nextWeek.getDate() + 7);
+            const nextWeekFormatted = nextWeek.toISOString().split('T')[0];
+            
+            document.getElementById('purchase-date-1').value = today;
+            document.getElementById('expiry-date-1').value = nextWeekFormatted;
+        });
+    </script>
+</body>
+</html>

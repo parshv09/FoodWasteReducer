@@ -1,46 +1,273 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Waste Reducer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">  
+    <title>Dashboard - Food Waste Reducer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0fdf4;
+        }
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(16, 185, 129, 0.1), 0 10px 10px -5px rgba(16, 185, 129, 0.04);
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
 </head>
-<body>
-    <header>
-        <div class="header-content">
-            <img src="{% static 'images/foodLogo.jpg' %}" alt="Food Waste Reducer Logo" class="logo">
-            <h1>Food Waste Reducer</h1>
-            
-        </div>  
-        <div> <a href="{% url 'logout' %}" class="logout">logout</a></div>    
+<body class="min-h-screen flex flex-col">
+    <!-- Animated Header -->
+    <header class="bg-green-800 text-white shadow-lg animate__animated animate__fadeInDown">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <img src="{% static 'images/logo.png' %}" alt="Food Waste Reducer Logo" class="h-10 w-10 animate__animated animate__pulse animate__infinite">
+                    <h1 class="title-font text-xl md:text-2xl font-bold">Food Waste Reducer</h1>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="#" class="hidden md:block text-green-100 hover:text-white transition">My Profile</a>
+                    <a href="{% url 'logout' %}" class="flex items-center space-x-1 bg-green-700 hover:bg-green-600 px-4 py-2 rounded-lg transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </header>
 
-    <section class="features">
-        <div class="feature">
-            <h3>Get Recipe Suggestions</h3>
-            <p>Get tasty recipes based on your ingredients, saving food from waste.</p>
-            <a href="{% url 'food_details' %}">
-                <button class="add">Suggest Recipes</button>
-            </a>
-        </div>
-        <div class="feature">
-            <h3>Food Inventory</h3>
-            <p>Tell us what you have and get Notification of Expiration</p>
-            <a href="{% url 'inventory' %}">
-                <button class="add">Add</button>
-            </a>
-        </div>
-    </section>
+    <!-- Main Content -->
+    <main class="flex-grow py-12">
+        <div class="container mx-auto px-6">
+            <!-- Welcome Banner -->
+            <div class="bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl p-6 md:p-8 mb-12 text-white animate__animated animate__fadeIn">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="mb-6 md:mb-0">
+                        <h2 class="title-font text-2xl md:text-3xl font-bold mb-2">Welcome Back!</h2>
+                        <p class="max-w-lg">Start reducing your food waste today with our smart tools and recipes.</p>
+                    </div>
+                    <img src="{% static 'images/dashboard-hero.png' %}" alt="Happy cooking" class="h-32 md:h-40 floating">
+                </div>
+            </div>
 
-    <footer>
-        <p>Contact us:<a href="mailto:foodreducer@gmail.com">foodreducer@gmail.com</a></p>
-        <div class="footer-links">
-            <a href="{% url 'about' %}">About</a> | 
-            <a href="{% url 'privacy' %}">Privacy Policy</a>
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500 animate__animated animate__fadeInLeft">
+                    <div class="flex items-center">
+                        <div class="bg-green-100 p-3 rounded-full mr-4">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-gray-500">Saved Recipes</p>
+                            <h3 class="text-2xl font-bold text-gray-800">12</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-emerald-500 animate__animated animate__fadeInUp">
+                    <div class="flex items-center">
+                        <div class="bg-emerald-100 p-3 rounded-full mr-4">
+                            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-gray-500">Money Saved</p>
+                            <h3 class="text-2xl font-bold text-gray-800">$87.50</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-teal-500 animate__animated animate__fadeInRight">
+                    <div class="flex items-center">
+                        <div class="bg-teal-100 p-3 rounded-full mr-4">
+                            <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-gray-500">Food Saved</p>
+                            <h3 class="text-2xl font-bold text-gray-800">5.2 kg</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <h2 class="title-font text-2xl md:text-3xl font-bold text-gray-800 mb-6 animate__animated animate__fadeIn">Quick Actions</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Recipe Suggestion Card -->
+                <div class="feature-card bg-white rounded-xl shadow-md overflow-hidden border border-green-100 transition duration-300 animate__animated animate__fadeInUp">
+                    <div class="h-40 bg-green-50 flex items-center justify-center">
+                        <img src="{% static 'images/recipe-suggestions.jpg' %}" alt="Recipe suggestions" class="h-full w-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-green-100 p-2 rounded-full mr-3">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800">Get Recipe Suggestions</h3>
+                        </div>
+                        <p class="text-gray-600 mb-6">Get tasty recipes based on your ingredients, saving food from waste.</p>
+                        <a href="{% url 'food_details' %}" class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition transform hover:scale-105">
+                            <span>Suggest Recipes</span>
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Food Inventory Card -->
+                <div class="feature-card bg-white rounded-xl shadow-md overflow-hidden border border-green-100 transition duration-300 animate__animated animate__fadeInUp animate__delay-1s">
+                    <div class="h-40 bg-green-50 flex items-center justify-center">
+                        <img src="{% static 'images/food-inventory.jpg' %}" alt="Food inventory" class="h-full w-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-green-100 p-2 rounded-full mr-3">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800">Food Inventory</h3>
+                        </div>
+                        <p class="text-gray-600 mb-6">Track your food items and get expiration notifications to prevent waste.</p>
+                        <a href="{% url 'inventory:dashboard' %}" class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition transform hover:scale-105">
+                            <span>Manage Inventory</span>
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expiring Soon Section -->
+            <h2 class="title-font text-2xl md:text-3xl font-bold text-gray-800 mt-12 mb-6 animate__animated animate__fadeIn">Expiring Soon</h2>
+            <div class="bg-white rounded-xl shadow-md overflow-hidden animate__animated animate__fadeIn">
+                <div class="p-6">
+                    <div class="flex flex-col md:flex-row items-center justify-between mb-6">
+                        <h3 class="text-lg font-medium text-gray-800">Items that will expire in the next 7 days</h3>
+                        <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium mt-2 md:mt-0 pulse">3 items</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                            <div class="flex items-center">
+                                <div class="bg-red-100 p-2 rounded-full mr-3">
+                                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Fresh Spinach</h4>
+                                    <p class="text-sm text-gray-500">Expires in 2 days</p>
+                                </div>
+                            </div>
+                            <button class="text-green-600 hover:text-green-800 font-medium">Use Now</button>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-amber-50 rounded-lg">
+                            <div class="flex items-center">
+                                <div class="bg-amber-100 p-2 rounded-full mr-3">
+                                    <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Milk</h4>
+                                    <p class="text-sm text-gray-500">Expires in 4 days</p>
+                                </div>
+                            </div>
+                            <button class="text-green-600 hover:text-green-800 font-medium">Use Now</button>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-amber-50 rounded-lg">
+                            <div class="flex items-center">
+                                <div class="bg-amber-100 p-2 rounded-full mr-3">
+                                    <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Bananas</h4>
+                                    <p class="text-sm text-gray-500">Expires in 6 days</p>
+                                </div>
+                            </div>
+                            <button class="text-green-600 hover:text-green-800 font-medium">Use Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-green-900 text-green-100 py-8 mt-12">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                    <img src="{% static 'images/logo-white.png' %}" alt="Food Waste Reducer Logo" class="h-8 w-8">
+                    <span class="title-font">Food Waste Reducer</span>
+                </div>
+                <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-sm">
+                    <a href="{% url 'about' %}" class="hover:text-white transition">About</a>
+                    <a href="{% url 'privacy' %}" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="mailto:foodreducer@gmail.com" class="hover:text-white transition">Contact Us</a>
+                </div>
+            </div>
+            <div class="mt-6 text-center text-xs text-green-300">
+                &copy; 2023 Food Waste Reducer. All rights reserved.
+            </div>
         </div>
     </footer>
+
+    <script>
+        // Simple animations for elements when they come into view
+        document.addEventListener('DOMContentLoaded', function() {
+            const animateOnScroll = function(entries, observer) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            };
+            
+            const observer = new IntersectionObserver(animateOnScroll, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.feature-card, .stats-card').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
 </body>
 </html>

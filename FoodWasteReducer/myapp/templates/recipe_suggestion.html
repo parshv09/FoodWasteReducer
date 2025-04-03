@@ -4,91 +4,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipe Suggestions</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Recipe Suggestions - Food Waste Reducer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        .recipe-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            padding: 20px;
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0fdf4;
         }
-        .recipe-card {
-            width: 300px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 15px;
-            background: #f9f9f9;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
+        .title-font {
+            font-family: 'Playfair Display', serif;
         }
-        .recipe-card img {
-            width: 100%;
-            border-radius: 10px;
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(16, 185, 129, 0.1), 0 10px 10px -5px rgba(16, 185, 129, 0.04);
         }
-        .recipe-card h4 {
-            margin: 10px 0;
-            color: #333;
+        .floating {
+            animation: floating 3s ease-in-out infinite;
         }
-        .recipe-card p {
-            font-size: 14px;
-            color: #666;
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
-        .instructions {
-            text-align: left;
-            margin-top: 10px;
+        .fade-in {
+            animation: fadeIn 0.5s ease-in forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .ingredient-chip {
+            transition: all 0.3s ease;
+        }
+        .ingredient-chip:hover {
+            background-color: #10b981;
+            color: white;
+        }
+        .instruction-text {
+            white-space: pre-line;
         }
     </style>
 </head>
-<body>
-    <header>
-        <h1>Food Waste Reducer</h1>
+<body class="min-h-screen">
+    <!-- Animated Header -->
+    <header class="bg-green-800 text-white shadow-lg animate__animated animate__fadeInDown">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <img src="{% static 'images/logo.png' %}" alt="Food Waste Reducer Logo" class="h-10 w-10">
+                    <h1 class="title-font text-xl md:text-2xl font-bold">Food Waste Reducer</h1>
+                </div>
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="/" class="text-green-100 hover:text-white transition">Home</a>
+                    <a href="{% url 'inventory_dashboard' %}" class="text-green-100 hover:text-white transition">Inventory</a>
+                    <a href="{% url 'logout' %}" class="text-green-100 hover:text-white transition">Logout</a>
+                </nav>
+            </div>
+        </div>
     </header>
 
-    <main>
-        <h2>Suggested Recipes</h2>
-        {% if ingredients %}
-            <p>Based on the ingredients: <strong>{{ ingredients }}</strong></p>
-        {% endif %}
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <!-- Hero Section -->
+        <div class="bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl p-8 mb-12 text-white animate__animated animate__fadeIn">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="mb-6 md:mb-0 md:w-2/3">
+                    <h2 class="title-font text-3xl md:text-4xl font-bold mb-4">Delicious Recipe Suggestions</h2>
+                    {% if ingredients %}
+                    <p class="text-lg mb-4">We found these perfect recipes for your ingredients:</p>
+                    <div class="flex flex-wrap gap-2">
+                        {% for ingredient in ingredients_list %}
+                        <span class="ingredient-chip bg-white bg-opacity-20 px-3 py-1 rounded-full text-sm">{{ ingredient }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-lg">Discover recipes to reduce your food waste</p>
+                    {% endif %}
+                </div>
+                <img src="{% static 'images/recipe-hero.png' %}" alt="Cooking illustration" class="h-40 md:h-56 floating">
+            </div>
+        </div>
 
-        <!-- Display API recipes -->
+        <!-- API Recipes Section -->
         {% if recipes_api %}
-            <h3>Recipes from External API</h3>
-            <div class="recipe-container">
+        <section class="mb-16 animate__animated animate__fadeIn">
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="title-font text-2xl md:text-3xl font-bold text-gray-800">Recommended Recipes</h3>
+                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">{{ recipes_api|length }} suggestions</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {% for recipe in recipes_api %}
-                    <section class="recipe-card">
-                        <h4>{{ recipe.title }}</h4>
-                        {% if recipe.image %}
-                            <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
-                        {% endif %}
-                        <p class="instructions"><strong>Instructions:</strong></p>
-                        <div class="instruction-text">{{ recipe.instructions|linebreaks }}</div>
+                <article class="recipe-card bg-white rounded-xl shadow-md overflow-hidden border border-green-100 transition duration-300 fade-in" style="animation-delay: style="animation-delay: {% widthratio forloop.counter0|add:1 2 1 %}s"">
+                    {% if recipe.image %}
+                    <div class="h-48 bg-green-50 overflow-hidden">
+                        <img src="{{ recipe.image }}" alt="{{ recipe.title }}" class="w-full h-full object-cover">
+                    </div>
+                    {% endif %}
+                    <div class="p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <h4 class="text-xl font-bold text-gray-800">{{ recipe.title }}</h4>
+                            {% if recipe.readyInMinutes %}
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">{{ recipe.readyInMinutes }} mins</span>
+                            {% endif %}
+                        </div>
                         
-                    </section>
+                        {% if recipe.extendedIngredients %}
+                        <div class="mb-4">
+                            <h5 class="text-sm font-medium text-gray-500 mb-2">Key Ingredients:</h5>
+                            <div class="flex flex-wrap gap-2">
+                                {% for ingredient in recipe.extendedIngredients|slice:":5" %}
+                                <span class="ingredient-chip bg-green-50 text-green-800 px-2 py-1 rounded-full text-xs">{{ ingredient.name }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="mb-4">
+                            <h5 class="text-sm font-medium text-gray-500 mb-2">Instructions:</h5>
+                            <div class="instruction-text prose prose-sm max-w-none text-gray-600">
+                                {{ recipe.instructions|linebreaksbr }}
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center mt-6">
+                            {% if recipe.sourceUrl %}
+                            <a href="{{ recipe.sourceUrl }}" target="_blank" class="text-green-600 hover:text-green-800 font-medium text-sm flex items-center">
+                                View Full Recipe
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
+                            {% endif %}
+                            <button class="text-green-600 hover:text-green-800 font-medium text-sm flex items-center">
+                                Save Recipe
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </article>
                 {% endfor %}
             </div>
+        </section>
         {% endif %}
 
-        <!-- Display local recipes -->
+        <!-- Local Recipes Section -->
         {% if recipes_local %}
-            <h3>Your Custom Recipes</h3>
-            <div class="recipe-container">
+        <section class="animate__animated animate__fadeIn">
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="title-font text-2xl md:text-3xl font-bold text-gray-800">Your Custom Recipes</h3>
+                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">{{ recipes_local|length }} matches</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {% for recipe in recipes_local %}
-                    <section class="recipe-card">
-                        <h4>{{ recipe.name }}</h4>
-                        {% if recipe.image_url %}
-                            <img src="{{ recipe.image_url }}" alt="{{ recipe.name }}">
-                        {% endif %}
-                        <p class="instructions"><strong>Instructions:</strong> {{ recipe.instructions|safe }}</p>
-                    </section>
+                <article class="recipe-card bg-white rounded-xl shadow-md overflow-hidden border border-green-100 transition duration-300 fade-in" style="animation-delay: {% widthratio forloop.counter0|add:1 2 1 %}s"">
+                    {% if recipe.image_url %}
+                    <div class="h-48 bg-green-50 overflow-hidden">
+                        <img src="{{ recipe.image_url }}" alt="{{ recipe.name }}" class="w-full h-full object-cover">
+                    </div>
+                    {% else %}
+                    <div class="h-48 bg-green-50 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                    </div>
+                    {% endif %}
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold text-gray-800 mb-4">{{ recipe.name }}</h4>
+                        
+                        <div class="mb-4">
+                            <h5 class="text-sm font-medium text-gray-500 mb-2">Instructions:</h5>
+                            <div class="instruction-text prose prose-sm max-w-none text-gray-600">
+                                {{ recipe.instructions|linebreaksbr }}
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center mt-6">
+                            <button class="text-green-600 hover:text-green-800 font-medium text-sm flex items-center">
+                                Save to Favorites
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </article>
                 {% endfor %}
             </div>
+        </section>
+        {% endif %}
+
+        <!-- Empty State -->
+        {% if not recipes_api and not recipes_local %}
+        <div class="text-center py-16 animate__animated animate__fadeIn">
+            <img src="{% static 'images/no-recipes.png' %}" alt="No recipes found" class="h-40 mx-auto mb-6 floating">
+            <h3 class="title-font text-2xl font-bold text-gray-800 mb-2">No Recipes Found</h3>
+            <p class="text-gray-600 mb-6">We couldn't find any recipes matching your ingredients. Try adding more items to your inventory.</p>
+            <a href="{% url 'inventory' %}" class="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition transform hover:scale-105">
+                Go to Inventory
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+            </a>
+        </div>
         {% endif %}
     </main>
 
-    <footer>
-        <p>Contact us: <a href="mailto:foodreducer@gmail.com">foodreducer@gmail.com</a></p>
+    <!-- Footer -->
+    <footer class="bg-green-900 text-green-100 py-8">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                    <img src="{% static 'images/logo-white.png' %}" alt="Food Waste Reducer Logo" class="h-8 w-8">
+                    <span class="title-font">Food Waste Reducer</span>
+                </div>
+                <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-sm">
+                    <a href="{% url 'about' %}" class="hover:text-white transition">About</a>
+                    <a href="{% url 'privacy' %}" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="mailto:foodreducer@gmail.com" class="hover:text-white transition">Contact Us</a>
+                </div>
+            </div>
+            <div class="mt-6 text-center text-xs text-green-300">
+                &copy; 2023 Food Waste Reducer. All rights reserved.
+            </div>
+        </div>
     </footer>
+
+    <script>
+        // Simple animations for elements when they come into view
+        document.addEventListener('DOMContentLoaded', function() {
+            const animateOnScroll = function(entries, observer) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            };
+            
+            const observer = new IntersectionObserver(animateOnScroll, {
+                threshold: 0.1
+            });
+            
+            const cards = document.querySelectorAll('.recipe-card');
+            cards.forEach((card, index) => {
+            card.style.animationDelay = `${(index + 1) * 0.5}s`;
+            });
+
+        });
+    </script>
 </body>
 </html>

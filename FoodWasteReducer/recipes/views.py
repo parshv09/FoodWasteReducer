@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 from .models import Recipe
 from .utils import fetch_recipes_from_api ,generate_proper_instructions

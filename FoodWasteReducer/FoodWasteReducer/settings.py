@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'myapp',
     'recipes',
-   
+   'inventory'
 ]
 
 MIDDLEWARE = [
@@ -137,3 +137,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SESSION_COOKIE_AGE = 1800  # Auto logout after 30 minutes (1800 seconds)
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Logout when the browser closes
 SESSION_SAVE_EVERY_REQUEST = True  # Reset session timer on every request
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'inventory'
+LOGOUT_REDIRECT_URL = 'home'
