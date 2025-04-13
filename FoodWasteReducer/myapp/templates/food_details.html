@@ -69,6 +69,28 @@
 
         <!-- Food Details Form -->
         <form method="GET" action="{% url 'recipe_suggestion' %}" class="animate__animated animate__fadeIn">
+            <!-- Diet Type Dropdown -->
+            <div class="bg-white rounded-xl shadow-md p-6 border border-green-100 mb-6">
+                <div class="mb-4">
+                    <label for="diet-type" class="block text-sm font-medium text-gray-700 mb-1">Diet Type (Optional)</label>
+                    <select id="diet-type" name="diet-type" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
+                        <option value="">No specific diet</option>
+                        <option value="vegetarian">Vegetarian</option>
+                        <option value="vegan">Vegan</option>
+                        <option value="pescetarian">Pescetarian</option>
+                        <option value="ketogenic">Ketogenic</option>
+                        <option value="paleo">Paleo</option>
+                        <option value="primal">Primal</option>
+                        <option value="whole30">Whole30</option>
+                        <option value="gluten free">Gluten Free</option>
+                        <option value="dairy free">Dairy Free</option>
+                        <option value="lacto vegetarian">Lacto Vegetarian</option>
+                        <option value="ovo vegetarian">Ovo Vegetarian</option>
+                        <option value="low FODMAP">Low FODMAP</option>
+                    </select>
+                </div>
+            </div>
+
             <div id="foodItemsContainer" class="space-y-6 mb-8">
                 <!-- Initial food item form -->
                 <div class="food-form bg-white rounded-xl shadow-md p-6 border border-green-100">

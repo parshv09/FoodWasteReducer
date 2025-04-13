@@ -58,30 +58,32 @@ def generate_proper_instructions(recipe_title):
     
     return "\n".join(formatted_steps)
 
-def fetch_recipes_from_api(ingredients):
-    """Fetch recipes based on ingredients and get detailed info."""
+def fetch_recipes_from_api(ingredients, diet=None):
+    """Fetch recipes based on ingredients and diet preference."""
     endpoint = f"{BASE_URL}findByIngredients"
     params = {
         'ingredients': ingredients,
-        'number': 10,
+        'number': 5,
         'apiKey': API_KEY,
+        'diet': diet.lower() if diet else None,  # Add diet filter if provided
     }
+    
+    # Remove None values to avoid sending empty params
+    params = {k: v for k, v in params.items() if v is not None}
     
     response = requests.get(endpoint, params=params)
     if response.status_code == 200:
         recipes = response.json()
         
-        # Fetch full details for each recipe
         detailed_recipes = []
         for recipe in recipes:
-            
             details = fetch_recipe_details(recipe['id'])
             if details:
                 detailed_recipes.append({
                     'title': recipe['title'],
                     'image': recipe['image'],
-                    'instructions': details.get('instructions', 'Instructions not available.')
+                    'instructions': details.get('instructions', 'Instructions not available.'),
+                    'diet': diet  # Optional: Store diet info in the response
                 })
-        
         return detailed_recipes
     return []

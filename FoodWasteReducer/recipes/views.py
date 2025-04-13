@@ -25,25 +25,30 @@ def recipe_suggestion(request):
     recipes_api = []
     recipes_local = []
     ingredients_query = ''
+    diet_type = request.GET.get('diet-type', '').strip()  # Get diet type from request
 
     if request.method == 'GET' and 'food-item' in request.GET:
         food_items = request.GET.getlist('food-item') or request.GET.get('food-item', '').split(',')
         ingredients_query = ', '.join(set(item.strip() for item in food_items if item.strip()))
 
-        recipes_api = fetch_recipes_from_api(ingredients_query)
-        recipes_local = Recipe.objects.filter(ingredients__icontains=ingredients_query)
+        # Pass diet_type to the API fetcher
+        recipes_api = fetch_recipes_from_api(ingredients_query, diet=diet_type if diet_type else None)
+        
+        # (Optional) Filter local recipes by diet type if needed
+       # recipes_local = Recipe.objects.filter(ingredients__icontains=ingredients_query)
+       # if diet_type:
+         #   recipes_local = recipes_local.filter(diet_type__iexact=diet_type)  # Assuming your Recipe model has a `diet_type` field
 
         for recipe in recipes_api:
             raw_instructions = recipe.get("instructions", "")
-
-            if raw_instructions:  # ✅ If Spoonacular provides instructions
+            if raw_instructions:
                 recipe["instructions"] = clean_html(raw_instructions)
-            else:  # ❌ If missing, generate proper instructions based on recipe title
-                recipe_title = recipe.get("title", "Delicious Dish")
-                recipe["instructions"] = generate_proper_instructions(recipe_title)  
+            else:
+                recipe["instructions"] = generate_proper_instructions(recipe.get("title", "Delicious Dish"))
 
     context = {
         'ingredients': ingredients_query,
+        'diet_type': diet_type,  # Pass diet_type to template (optional)
         'recipes_api': recipes_api,
         'recipes_local': recipes_local,
     }
@@ -53,4 +58,4 @@ def about(request):
     return render(request, 'recipes/about.html')
 
 def privacy(request):
-    return render(request, 'recipes/privacy.html')# Create your views here.
+    return render(request, 'recipes/privacy.html')
