@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ recipe.title }} - Food Waste Reducer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f0fdf4; }
+        .title-font { font-family: 'Playfair Display', serif; }
+        .ingredient-list li { position: relative; padding-left: 1.5rem; }
+        .ingredient-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.6rem;
+            width: 0.5rem;
+            height: 0.5rem;
+            background-color: #10b981;
+            border-radius: 50%;
+        }
+        .instruction-step {
+            counter-increment: step-counter;
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+        .instruction-step::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            background-color: #10b981;
+            color: white;
+            font-weight: bold;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    
+    <header class="bg-green-800 text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <img src="{% static 'images/logo.png' %}" alt="Logo" class="h-10 w-10">
+                    <h1 class="title-font text-xl md:text-2xl font-bold">Food Waste Reducer</h1>
+                </div>
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="/" class="text-green-100 hover:text-white transition">Home</a>
+                    <a href="{% url 'inventory_dashboard' %}" class="text-green-100 hover:text-white transition">Inventory</a>
+                    <a href="{% url 'logout' %}" class="text-green-100 hover:text-white transition">Logout</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8">
+        <!-- Recipe Header -->
+        <div class="flex flex-col md:flex-row gap-8 mb-12">
+            <div class="md:w-1/2">
+                <img src="{{ recipe.image }}" alt="{{ recipe.title }}" class="w-full h-auto rounded-xl shadow-lg object-cover">
+            </div>
+            <div class="md:w-1/2">
+                <h1 class="title-font text-3xl md:text-4xl font-bold text-gray-800 mb-4">{{ recipe.title }}</h1>
+                
+                <div class="flex gap-4 mb-6">
+                    <div class="bg-white px-4 py-2 rounded-lg shadow-sm">
+                        <p class="text-gray-500 text-sm">Prep Time</p>
+                        <p class="font-bold text-green-700">{{ recipe.readyInMinutes }} mins</p>
+                    </div>
+                    <div class="bg-white px-4 py-2 rounded-lg shadow-sm">
+                        <p class="text-gray-500 text-sm">Servings</p>
+                        <p class="font-bold text-green-700">{{ recipe.servings }}</p>
+                    </div>
+                </div>
+
+                <div class="prose max-w-none mb-6">
+                    {{ recipe.summary|safe }}
+                </div>
+
+                <button class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium">
+                    Save Recipe
+                </button>
+            </div>
+        </div>
+
+        <!-- Ingredients Section -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="title-font text-2xl md:text-3xl font-bold text-gray-800 mb-6">Ingredients</h2>
+            <ul class="ingredient-list grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% for ingredient in recipe.ingredients %}
+                <li class="mb-2">
+                    <span class="font-medium">{{ ingredient.name }}</span>
+                    <span class="text-gray-600 text-sm ml-2">
+                        - {{ ingredient.amount }} {{ ingredient.unit }}
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <!-- Instructions Section -->
+        <section class="bg-green-50 rounded-xl shadow-sm p-6">
+            <h2 class="title-font text-2xl md:text-3xl font-bold text-gray-800 mb-6">Instructions</h2>
+            <div class="prose max-w-none">
+                <ol class="list-none pl-0">
+                    {% for step in recipe.instruction_steps %}
+                    <li class="instruction-step">
+                        {{ step }}
+                    </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-green-900 text-green-100 py-8">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                    <img src="{% static 'images/logo-white.png' %}" alt="Logo" class="h-8 w-8">
+                    <span class="title-font">Food Waste Reducer</span>
+                </div>
+                <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-sm">
+                    <a href="{% url 'about' %}" class="hover:text-white transition">About</a>
+                    <a href="{% url 'privacy' %}" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="mailto:foodreducer@gmail.com" class="hover:text-white transition">Contact Us</a>
+                </div>
+            </div>
+            <div class="mt-6 text-center text-xs text-green-300">
+                &copy; 2023 Food Waste Reducer. All rights reserved.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -2,7 +2,7 @@ import requests
 
 
 
-API_KEY = 'fbf7e3cb11c54ddb8f3b39b750cc09c2'
+API_KEY = '47dba11ea2df4be6ba1a0a123333265d'
 BASE_URL = 'https://api.spoonacular.com/recipes/'
     
 
@@ -60,12 +60,14 @@ def generate_proper_instructions(recipe_title):
 
 def fetch_recipes_from_api(ingredients, diet=None):
     """Fetch recipes based on ingredients and diet preference."""
-    endpoint = f"{BASE_URL}findByIngredients"
+    endpoint = f"{BASE_URL}complexSearch"
     params = {
-        'ingredients': ingredients,
+        
+        'includeIngredients': ingredients,
         'number': 5,
         'apiKey': API_KEY,
         'diet': diet.lower() if diet else None,  # Add diet filter if provided
+        'instructionsRequired': True,
     }
     
     # Remove None values to avoid sending empty params
@@ -73,13 +75,14 @@ def fetch_recipes_from_api(ingredients, diet=None):
     
     response = requests.get(endpoint, params=params)
     if response.status_code == 200:
-        recipes = response.json()
+        recipes = response.json().get('results',[])
         
         detailed_recipes = []
         for recipe in recipes:
             details = fetch_recipe_details(recipe['id'])
             if details:
                 detailed_recipes.append({
+                    'id': recipe['id'],
                     'title': recipe['title'],
                     'image': recipe['image'],
                     'instructions': details.get('instructions', 'Instructions not available.'),

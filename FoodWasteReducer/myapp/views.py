@@ -76,3 +76,6 @@ def done(request):
 
 def food_details(request):
     return render(request, 'food_details.html')
+
+def go_to_recipe_suggestion(request):
+    return redirect('recipe_Suggestion')

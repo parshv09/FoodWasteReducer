@@ -1,7 +1,7 @@
 
 from django.shortcuts import render
 from .models import Recipe
-from .utils import fetch_recipes_from_api ,generate_proper_instructions
+from .utils import fetch_recipes_from_api ,generate_proper_instructions,fetch_recipe_details
 import html
 from bs4 import BeautifulSoup  
   
@@ -52,7 +52,43 @@ def recipe_suggestion(request):
         'recipes_api': recipes_api,
         'recipes_local': recipes_local,
     }
-    return render(request, 'recipe_suggestion.html', context)
+    return render(request, 'recipes/recipe_suggestion.html', context)
+
+def recipe_detail(request, recipe_id):
+    # For API recipes
+    recipe_data = fetch_recipe_details(recipe_id)
+    
+    if not recipe_data:
+        return render(request, '404.html', status=404)
+    
+    # Process ingredients into consistent format
+    ingredients = []
+    for ing in recipe_data.get('extendedIngredients', []):
+        ingredients.append({
+            'name': ing.get('name', ''),
+            'amount': ing.get('amount', 0),
+            'unit': ing.get('unit', '')
+        })
+    
+    # Process instructions
+    instructions = clean_html(recipe_data.get('instructions', ''))
+    
+    instruction_steps = [step for step in instructions.split('\n') if step.strip()]
+    
+    context = {
+        'recipe': {
+            'title': recipe_data.get('title', ''),
+            'image': recipe_data.get('image', ''),
+            'readyInMinutes': recipe_data.get('readyInMinutes', 0),
+            'servings': recipe_data.get('servings', 0),
+            'ingredients': ingredients,
+            'instructions': instructions,
+            'summary': recipe_data.get('summary', ''),
+            'instruction_steps': instruction_steps,
+        }
+    }
+    return render(request, 'recipes/detailed_recipes.html', context)
+
 
 def about(request):
     return render(request, 'recipes/about.html')
