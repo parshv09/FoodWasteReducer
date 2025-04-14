@@ -1,5 +1,5 @@
 import requests
-
+from django.core.cache import cache
 
 
 API_KEY = '47dba11ea2df4be6ba1a0a123333265d'
@@ -7,13 +7,21 @@ BASE_URL = 'https://api.spoonacular.com/recipes/'
     
 
 def fetch_recipe_details(recipe_id):
+    cache_key = f"recipe_{recipe_id}"
+    cached_data = cache.get(cache_key)
+
+    if cached_data:
+        return cached_data
+
     """Fetch full recipe details including cooking instructions."""
     url = f"{BASE_URL}{recipe_id}/information"
     params = {'apiKey': API_KEY}
     response = requests.get(url, params=params)
     
     if response.status_code == 200:
-        return response.json()
+        data= response.json()
+        cache.set(cache_key, data, timeout=3600)  # Cache for 1 hour
+        return data
     return None
 
 def generate_proper_instructions(recipe_title):
@@ -56,9 +64,14 @@ def generate_proper_instructions(recipe_title):
     """)
 
     
-    return "\n".join(formatted_steps)
 
 def fetch_recipes_from_api(ingredients, diet=None):
+    cache_key = f"search_{ingredients}_{diet}"
+    cached_data = cache.get(cache_key)
+
+    if cached_data:
+        return cached_data
+    
     """Fetch recipes based on ingredients and diet preference."""
     endpoint = f"{BASE_URL}complexSearch"
     params = {
@@ -88,5 +101,6 @@ def fetch_recipes_from_api(ingredients, diet=None):
                     'instructions': details.get('instructions', 'Instructions not available.'),
                     'diet': diet  # Optional: Store diet info in the response
                 })
+        cache.set(cache_key, detailed_recipes, timeout=3600)
         return detailed_recipes
     return []

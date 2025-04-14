@@ -4,7 +4,8 @@ from .models import Recipe
 from .utils import fetch_recipes_from_api ,generate_proper_instructions,fetch_recipe_details
 import html
 from bs4 import BeautifulSoup  
-  
+from django.contrib.auth.decorators import login_required
+
 
 
 def clean_html(raw_html):
@@ -21,6 +22,7 @@ def clean_html(raw_html):
 
     return "\n".join(formatted_steps)
 
+@login_required
 def recipe_suggestion(request):
     recipes_api = []
     recipes_local = []
@@ -54,6 +56,7 @@ def recipe_suggestion(request):
     }
     return render(request, 'recipes/recipe_suggestion.html', context)
 
+@login_required
 def recipe_detail(request, recipe_id):
     # For API recipes
     recipe_data = fetch_recipe_details(recipe_id)
