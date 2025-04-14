@@ -4,3 +4,4 @@ beautifulsoup4==4.12.3
 html5lib==1.1
 mysqlclient==2.2.4  # only if using MySQL with Django
 PyMySQL==1.1.0
+python-dotenv==1.1.0

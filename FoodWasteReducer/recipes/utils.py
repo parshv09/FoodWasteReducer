@@ -1,8 +1,11 @@
 import requests
 from django.core.cache import cache
+from dotenv import load_dotenv
+import os 
 
+load_dotenv()
 
-API_KEY = '47dba11ea2df4be6ba1a0a123333265d'
+API_KEY = os.getenv('SPOONACULAR_API_KEY')
 BASE_URL = 'https://api.spoonacular.com/recipes/'
     
 
