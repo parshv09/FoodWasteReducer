@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate,logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 # Import BeautifulSoup to clean HTML
-
+from recipes.models import SavedRecipe
 
 def home(request):
     return render(request, 'index.html')
@@ -70,6 +70,16 @@ def register(request):
         return redirect('login')
 
     return render(request, 'register.html')
+
+
+@login_required
+def profile(request):
+    saved_recipes = SavedRecipe.objects.filter(
+        user=request.user,
+        recipe_id__isnull=False
+    ).exclude(recipe_id='').order_by('-id')[:6]
+    
+    return render(request, 'myapp/profile.html', {'saved_recipes': saved_recipes})
 
 def done(request):
     return render(request, 'done.html')

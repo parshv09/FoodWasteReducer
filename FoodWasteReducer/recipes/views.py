@@ -1,6 +1,6 @@
-
+from django.http import JsonResponse
 from django.shortcuts import render
-from .models import Recipe
+from .models import SavedRecipe
 from .utils import fetch_recipes_from_api ,generate_proper_instructions,fetch_recipe_details
 import html
 from bs4 import BeautifulSoup  
@@ -93,6 +93,44 @@ def recipe_detail(request, recipe_id):
     return render(request, 'recipes/detailed_recipes.html', context)
 
 
+
+@login_required
+def save_recipe(request):
+    if request.method == "POST":
+        recipe_id = request.POST.get("recipe_id")
+        title = request.POST.get("title")
+        image_url = request.POST.get("image_url")
+        ready_in_minutes = request.POST.get("ready_in_minutes")
+        servings = request.POST.get("servings")
+        ingredients = request.POST.get("ingredients")
+        instructions = request.POST.get("instructions")
+        summary = request.POST.get("summary")
+
+        # Check if this exact recipe is already saved by this user
+        if SavedRecipe.objects.filter(
+            user=request.user, 
+            recipe_id=recipe_id,
+            title=title,
+            image_url=image_url
+        ).exists():
+            return JsonResponse({"status": "info", "message": "This exact recipe is already saved."})
+        
+        # Save the new recipe
+        SavedRecipe.objects.create(
+            user=request.user,
+            recipe_id=recipe_id,
+            title=title,
+            image_url=image_url,
+            ready_in_minutes=ready_in_minutes,
+            servings=servings,
+            ingredients=ingredients,
+            instructions=instructions,
+            summary=summary
+        )
+
+        return JsonResponse({"status": "success", "message": "Recipe saved successfully."})
+    
+    return JsonResponse({"status": "error", "message": "Invalid request."})
 def about(request):
     return render(request, 'recipes/about.html')
 

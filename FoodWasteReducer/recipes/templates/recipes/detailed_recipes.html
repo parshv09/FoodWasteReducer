@@ -42,7 +42,57 @@
             align-items: center;
             justify-content: center;
         }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            opacity: 0.9;
+            z-index: 1000;
+        }
+        .toast.success { background: #28a745; }
+        .toast.info { background: #17a2b8; }
+        .toast.error { background: #dc3545; }
     </style>
+    <script>
+        function saveRecipe(event) {
+            event.preventDefault(); // prevent form reload
+    
+            const form = event.target;
+            const formData = new FormData(form);
+    
+            fetch("{% url 'save_recipe' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // show toast message here
+                showToast(data.message, data.status);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                showToast("Something went wrong.", "error");
+            });
+        }
+    
+        function showToast(message, type) {
+            const toast = document.createElement("div");
+            toast.className = "toast " + type;
+            toast.innerText = message;
+            document.body.appendChild(toast);
+    
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+    </script>
 </head>
 <body class="min-h-screen">
     
@@ -86,7 +136,7 @@
                     {{ recipe.summary|safe }}
                 </div>
 
-                <form action="{% url 'save_recipe' %}" method="post">
+                <form onsubmit="saveRecipe(event)">
                     {% csrf_token %}
                     <input type="hidden" name="recipe_id" value="{{ recipe_id }}">
                     <input type="hidden" name="title" value="{{ recipe.title }}">
