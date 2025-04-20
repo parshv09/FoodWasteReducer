@@ -86,9 +86,22 @@
                     {{ recipe.summary|safe }}
                 </div>
 
-                <button class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium">
-                    Save Recipe
-                </button>
+                <form action="{% url 'save_recipe' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="recipe_id" value="{{ recipe_id }}">
+                    <input type="hidden" name="title" value="{{ recipe.title }}">
+                    <input type="hidden" name="image_url" value="{{ recipe.image }}">
+                    <input type="hidden" name="ready_in_minutes" value="{{ recipe.readyInMinutes }}">
+                    <input type="hidden" name="servings" value="{{ recipe.servings }}">
+                
+                    <input type="hidden" name="ingredients" value="{% for ing in recipe.ingredients %}{{ ing.name }} - {{ ing.amount }} {{ ing.unit }}, {% endfor %}">
+                    <input type="hidden" name="instructions" value="{% for step in recipe.instruction_steps %}{{ step }} {% endfor %}">
+                    <input type="hidden" name="summary" value="{{ recipe.summary|striptags }}">
+                
+                    <button type="submit" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium">
+                        💾 Save Recipe
+                    </button>
+                </form>
             </div>
         </div>
 
