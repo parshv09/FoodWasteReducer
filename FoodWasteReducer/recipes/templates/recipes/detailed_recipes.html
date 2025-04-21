@@ -138,7 +138,7 @@
 
                 <form onsubmit="saveRecipe(event)">
                     {% csrf_token %}
-                    <input type="hidden" name="recipe_id" value="{{ recipe_id }}">
+                    <input type="hidden" name="recipe_id" value="{{ recipe.recipe_id }}">
                     <input type="hidden" name="title" value="{{ recipe.title }}">
                     <input type="hidden" name="image_url" value="{{ recipe.image }}">
                     <input type="hidden" name="ready_in_minutes" value="{{ recipe.readyInMinutes }}">

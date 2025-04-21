@@ -80,6 +80,7 @@ def recipe_detail(request, recipe_id):
     
     context = {
         'recipe': {
+            'id': recipe_data.get('id',0),
             'title': recipe_data.get('title', ''),
             'image': recipe_data.get('image', ''),
             'readyInMinutes': recipe_data.get('readyInMinutes', 0),
@@ -97,7 +98,7 @@ def recipe_detail(request, recipe_id):
 @login_required
 def save_recipe(request):
     if request.method == "POST":
-        recipe_id = request.POST.get("recipe_id")
+        recipe_id = str(request.POST.get("recipe_id"))
         title = request.POST.get("title")
         image_url = request.POST.get("image_url")
         ready_in_minutes = request.POST.get("ready_in_minutes")

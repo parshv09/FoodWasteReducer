@@ -74,12 +74,18 @@ def register(request):
 
 @login_required
 def profile(request):
-    saved_recipes = SavedRecipe.objects.filter(
-        user=request.user,
-        recipe_id__isnull=False
-    ).exclude(recipe_id='').order_by('-id')[:6]
+    saved_recipes = SavedRecipe.objects.filter(user=request.user).order_by('-id')
     
-    return render(request, 'myapp/profile.html', {'saved_recipes': saved_recipes})
+    # Debug output
+    print(f"User {request.user.username} has {saved_recipes.count()} saved recipes")
+    for recipe in saved_recipes[:6]:
+        print(f"Recipe: {recipe.title}, ID: {recipe.recipe_id}")
+    context = {
+        'saved_recipes': saved_recipes[:6],
+        'total_recipes': saved_recipes.count(),
+        'debug': True  # Optional flag for template debugging
+    }
+    return render(request, 'myapp/profile.html', context)
 
 def done(request):
     return render(request, 'done.html')
