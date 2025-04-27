@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate,logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-# Import BeautifulSoup to clean HTML
 from recipes.models import SavedRecipe
 
 def home(request):
@@ -39,7 +38,7 @@ def logout_view(request):
     messages.success(request, "Logged out successfully!")
     return redirect('login')
 
-@login_required  # Prevents access without login
+@login_required 
 def navigation(request):
     return render(request, 'navigation.html')
 
@@ -76,14 +75,11 @@ def register(request):
 def profile(request):
     saved_recipes = SavedRecipe.objects.filter(user=request.user).order_by('-id')
     
-    # Debug output
-    print(f"User {request.user.username} has {saved_recipes.count()} saved recipes")
-    for recipe in saved_recipes[:6]:
-        print(f"Recipe: {recipe.title}, ID: {recipe.recipe_id}")
+   
     context = {
-        'saved_recipes': saved_recipes[:6],
+        'saved_recipes': saved_recipes[:],
         'total_recipes': saved_recipes.count(),
-        'debug': True  # Optional flag for template debugging
+        'debug': True  
     }
     return render(request, 'myapp/profile.html', context)
 
@@ -93,5 +89,3 @@ def done(request):
 def food_details(request):
     return render(request, 'food_details.html')
 
-def go_to_recipe_suggestion(request):
-    return redirect('recipe_Suggestion')
