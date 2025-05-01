@@ -4,6 +4,9 @@ from django.contrib.auth import login, authenticate,logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from recipes.models import SavedRecipe
+from inventory.models import FoodItems
+from django.utils import timezone
+from datetime import timedelta
 
 def home(request):
     return render(request, 'index.html')
@@ -40,7 +43,18 @@ def logout_view(request):
 
 @login_required 
 def navigation(request):
-    return render(request, 'navigation.html')
+    saved_recipes = SavedRecipe.objects.filter(user=request.user).order_by('-id')
+    today = timezone.now().date()
+    next_week = today + timedelta(days=7)
+
+    expiring_soon_items = FoodItems.objects.filter(
+        user=request.user,
+        expiry_date__range=(today, next_week)
+    ).order_by('expiry_date')
+    return render(request, 'navigation.html', {
+        'expiring_soon_items': expiring_soon_items,
+        "total_recipes":saved_recipes.count(),
+    })
 
 def privacy_policy(request):
     return render(request, 'privacy.html')

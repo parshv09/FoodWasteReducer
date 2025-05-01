@@ -5,7 +5,7 @@ from django.utils import timezone
 def default_expiry_date():
     return timezone.now().date() + timezone.timedelta(days=7)
 
-class FoodItem(models.Model):
+class FoodItems(models.Model):
     CATEGORY_CHOICES = [
         ('FRUIT', 'Fruits'),
         ('VEG', 'Vegetables'),
@@ -27,3 +27,6 @@ class FoodItem(models.Model):
     
     def is_expiring_soon(self):
         return (self.expiry_date - timezone.now().date()).days <= 3
+    
+    def days_until_expiry(self):
+        return (self.expiry_date - timezone.now().date()).days

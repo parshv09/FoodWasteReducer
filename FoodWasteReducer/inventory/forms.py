@@ -1,5 +1,5 @@
 from django import forms
-from .models import FoodItem
+from .models import FoodItems
 from django.utils import timezone
 from django.core.validators import RegexValidator  # Add this import
 
@@ -9,7 +9,7 @@ class FoodItemForm(forms.ModelForm):
     )
     
     class Meta:
-        model = FoodItem
+        model = FoodItems
         fields = ['name', 'quantity', 'category', 'expiry_date']
         widgets = {
             'expiry_date': forms.DateInput(attrs={

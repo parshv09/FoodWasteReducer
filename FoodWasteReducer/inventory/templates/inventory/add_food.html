@@ -1,0 +1,260 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Food Items - Food Waste Reducer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0fdf4;
+        }
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+        .form-input:focus {
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.5);
+        }
+        .food-form {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="bg-green-800 text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <img src="{% static 'images/logo-White.png' %}" alt="Logo" class="h-10 w-10">
+                    <h1 class="title-font text-xl md:text-2xl font-bold">Food Waste Reducer</h1>
+                </div>
+                <div class="flex items-center space-x-6">
+                    {% if request.user.is_authenticated %}
+                    <span class="hidden md:block text-green-100">Hi, {{ request.user.username }} 👋</span>
+                    <a href="{% url 'logout' %}" class="flex items-center space-x-1 bg-green-700 hover:bg-green-600 px-4 py-2 rounded-lg transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                        <span>Logout</span>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <!-- Form Header -->
+            <div class="bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4 text-white">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="title-font text-2xl font-bold">Add Food Items</h1>
+                        <p class="text-green-100">Add multiple items to your inventory</p>
+                    </div>
+                    <button id="add-form-btn" type="button" 
+                        class="px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition flex items-center">
+                        <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Add Another
+                    </button>
+                </div>
+            </div>
+
+            <!-- Food Forms Container -->
+            <form method="POST" class="p-6" id="food-forms-container">
+                {% csrf_token %}
+                
+                <!-- Initial Food Form -->
+                <div class="food-form mb-6 p-4 border border-gray-200 rounded-lg relative" id="food-form-0">
+                    <button type="button" class="absolute top-2 right-2 text-red-500 hover:text-red-700 delete-form-btn" 
+                        data-form-id="food-form-0" {% if forms|length == 1 %}disabled{% endif %}>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                    </button>
+                    
+                    <!-- Food Name -->
+                    <div class="mb-4">
+                        <label for="name_0" class="block text-sm font-medium text-gray-700 mb-1">Food Name*</label>
+                        <input type="text" id="name_0" name="name_0" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg form-input"
+                            placeholder="e.g., Bananas, Milk, Chicken Breast">
+                    </div>
+
+                    <!-- Quantity and Category Row -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                        <!-- Quantity -->
+                        <div>
+                            <label for="quantity_0" class="block text-sm font-medium text-gray-700 mb-1">Quantity*</label>
+                            <input type="number" id="quantity_0" name="quantity_0" min="1" value="1" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg form-input">
+                        </div>
+
+                        <!-- Category -->
+                        <div>
+                            <label for="category_0" class="block text-sm font-medium text-gray-700 mb-1">Category*</label>
+                            <select id="category_0" name="category_0" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg form-input">
+                                <option value="FRUIT">Fruits</option>
+                                <option value="VEG">Vegetables</option>
+                                <option value="DAIRY">Dairy</option>
+                                <option value="MEAT">Meat</option>
+                                <option value="GRAIN">Grains</option>
+                                <option value="OTHER" selected>Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Expiry Date -->
+                    <div>
+                        <label for="expiry_date_0" class="block text-sm font-medium text-gray-700 mb-1">Expiry Date*</label>
+                        <input type="date" id="expiry_date_0" name="expiry_date_0" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg form-input"
+                            min="{{ today|date:'Y-m-d' }}">
+                        <p class="mt-1 text-sm text-gray-500">Default is 7 days from today</p>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Form Actions -->
+            <div class="px-6 pb-6 flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3">
+                <a href="{% url 'dashboard' %}" 
+                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-center transition">
+                    Cancel
+                </a>
+                <button type="submit" form="food-forms-container"
+                    class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition transform hover:scale-105 flex items-center">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+                    </svg>
+                    Add All to Inventory
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-green-900 text-green-100 py-6 mt-8">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex flex-col md:flex-row justify-center items-center space-y-2 md:space-y-0 md:space-x-6 text-sm">
+                <a href="{% url 'about' %}" class="hover:text-white transition">About</a>
+                <a href="{% url 'privacy' %}" class="hover:text-white transition">Privacy Policy</a>
+                <a href="mailto:foodreducer@gmail.com" class="hover:text-white transition">Contact Us</a>
+            </div>
+            <div class="mt-4 text-xs text-green-300">
+                &copy; 2023 Food Waste Reducer. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('food-forms-container');
+            const addFormBtn = document.getElementById('add-form-btn');
+            let formCount = 1; // Starts at 1 because we have the initial form
+            
+            // Set default expiry date for initial form
+            setDefaultExpiryDate('expiry_date_0');
+            
+            // Add new form
+            addFormBtn.addEventListener('click', function() {
+                const newFormId = `food-form-${formCount}`;
+                const newForm = document.createElement('div');
+                newForm.className = 'food-form mb-6 p-4 border border-gray-200 rounded-lg relative';
+                newForm.id = newFormId;
+                
+                newForm.innerHTML = `
+                    <button type="button" class="absolute top-2 right-2 text-red-500 hover:text-red-700 delete-form-btn" 
+                        data-form-id="${newFormId}">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                    </button>
+                    
+                    <div class="mb-4">
+                        <label for="name_${formCount}" class="block text-sm font-medium text-gray-700 mb-1">Food Name*</label>
+                        <input type="text" id="name_${formCount}" name="name_${formCount}" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg form-input"
+                            placeholder="e.g., Bananas, Milk, Chicken Breast">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                        <div>
+                            <label for="quantity_${formCount}" class="block text-sm font-medium text-gray-700 mb-1">Quantity*</label>
+                            <input type="number" id="quantity_${formCount}" name="quantity_${formCount}" min="1" value="1" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg form-input">
+                        </div>
+
+                        <div>
+                            <label for="category_${formCount}" class="block text-sm font-medium text-gray-700 mb-1">Category*</label>
+                            <select id="category_${formCount}" name="category_${formCount}" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg form-input">
+                                <option value="FRUIT">Fruits</option>
+                                <option value="VEG">Vegetables</option>
+                                <option value="DAIRY">Dairy</option>
+                                <option value="MEAT">Meat</option>
+                                <option value="GRAIN">Grains</option>
+                                <option value="OTHER" selected>Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="expiry_date_${formCount}" class="block text-sm font-medium text-gray-700 mb-1">Expiry Date*</label>
+                        <input type="date" id="expiry_date_${formCount}" name="expiry_date_${formCount}" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg form-input"
+                            min="{{ today|date:'Y-m-d' }}">
+                        <p class="mt-1 text-sm text-gray-500">Default is 7 days from today</p>
+                    </div>
+                `;
+                
+                container.appendChild(newForm);
+                setDefaultExpiryDate(`expiry_date_${formCount}`);
+                formCount++;
+                
+                // Enable delete buttons if there are multiple forms
+                document.querySelectorAll('.delete-form-btn').forEach(btn => {
+                    btn.disabled = false;
+                });
+            });
+            
+            // Delete form
+            container.addEventListener('click', function(e) {
+                if (e.target.closest('.delete-form-btn')) {
+                    const formId = e.target.closest('.delete-form-btn').getAttribute('data-form-id');
+                    const formToDelete = document.getElementById(formId);
+                    if (formToDelete) {
+                        formToDelete.remove();
+                        
+                        // If only one form left, disable its delete button
+                        const remainingForms = document.querySelectorAll('.food-form');
+                        if (remainingForms.length === 1) {
+                            remainingForms[0].querySelector('.delete-form-btn').disabled = true;
+                        }
+                    }
+                }
+            });
+            
+            function setDefaultExpiryDate(fieldId) {
+                const today = new Date();
+                const defaultExpiry = new Date();
+                defaultExpiry.setDate(today.getDate() + 7);
+                
+                const expiryDateField = document.getElementById(fieldId);
+                if (expiryDateField && !expiryDateField.value) {
+                    const formattedDate = defaultExpiry.toISOString().split('T')[0];
+                    expiryDateField.value = formattedDate;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
