@@ -16,9 +16,11 @@
             font-family: 'Playfair Display', serif;
         }
         .hero-bg {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{% static "images/food-hero-bg.jpg" %}');
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url('{% static "images/food-hero-bg.jpg" %}');
+            height: 72vh;
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
         }
         .feature-icon {
             transition: all 0.3s ease;
@@ -39,43 +41,79 @@
         .stats-item:hover {
             transform: scale(1.05);
         }
+        /* Mobile menu styles */
+        #mobile-menu {
+            position: fixed;
+            top: 64px; /* Adjust this based on your navbar height */
+            left: 0;
+            right: 0;
+            background: #065f46;
+            z-index: 40; /* Lower than navbar's z-50 */
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        #mobile-menu:not(.hidden) {
+            max-height: 500px; /* Adjust based on your content */
+            padding: 1rem;
+        }
+        
+        /* Ensure mobile menu items are properly spaced */
+        #mobile-menu a {
+            display: block;
+            padding: 0.75rem 0;
+        }
     </style>
 </head>
-<body class="bg-green-50">
+<body class="class="bg-green-50 pt-16">
     <!-- Header with Navigation -->
+    <div class="fixed w-full top-0 left-0 z-50">
     <header class="bg-green-800 text-white shadow-lg">
-        <div class="container mx-auto px-6 py-4">
+        <div class="container mx-auto px-6 py-4" >
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <img src="{% static 'images/logo-white.png' %}" alt="Food Waste Reducer Logo" class="h-12 w-12 animate__animated animate__pulse animate__infinite">
+                    <img src="{% static 'images/logo-white.png' %}" alt="Food Waste Reducer Logo" class="h-12 w-12 animate_animated animatepulse animate_infinite">
                     <h1 class="title-font text-2xl md:text-3xl font-bold">Food Waste Reducer</h1>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white focus:outline-none" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
                 </div>
                 <nav class="hidden md:flex items-center space-x-8">
                     <a href="#" class="text-green-100 hover:text-white font-medium transition">Home</a>
-                    <a href="#" class="text-green-100 hover:text-white font-medium transition">How It Works</a>
-                    <a href="#" class="text-green-100 hover:text-white font-medium transition">Recipes</a>
+                    <a href="#howworks" class="text-green-100 hover:text-white font-medium transition">How It Works</a>
+                    <a href="#recipes_sec" class="text-green-100 hover:text-white font-medium transition">Recipes</a>
                     <a href="#" class="text-green-100 hover:text-white font-medium transition">About</a>
                     <a href="{% url 'login' %}" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg font-medium transition">Login</a>
                 </nav>
-                <button class="md:hidden focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
+                <div id="mobile-menu" class="hidden md:hidden bg-green-700">
+                    <div class="container mx-auto px-6 py-4 flex flex-col space-y-4">
+                        <a href="#" class="text-green-100 hover:text-white font-medium transition">Home</a>
+                        <a href="#howworks" class="text-green-100 hover:text-white font-medium transition">How It Works</a>
+                        <a href="#recipes_sec" class="text-green-100 hover:text-white font-medium transition">Recipes</a>
+                        <a href="#" class="text-green-100 hover:text-white font-medium transition">About</a>
+                        <a href="{% url 'login' %}" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg font-medium transition text-center">Login</a>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
-
+</div>
     <!-- Hero Section -->
-    <section class="hero-bg text-white py-20 md:py-32 px-6 text-center animate__animated animate__fadeIn">
-        <div class="max-w-4xl mx-auto">
+    <section class="hero-bg text-white py-20 mt-14 md:py-32 px-6 text-center animate_animated animate_fadeIn">
+        <div class="max-w-4xl mx-auto h-full">
             <h2 class="title-font text-4xl md:text-6xl font-bold mb-6">Join the Movement to Reduce Food Waste!</h2>
             <p class="text-xl md:text-2xl mb-8">Discover delicious recipes to use up ingredients before they go to waste and save money while saving the planet.</p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
                 <a href="{% url 'register' %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full text-lg transition transform hover:scale-105">
                     Get Started - It's Free
                 </a>
-                <a href="#" class="bg-white hover:bg-gray-100 text-green-800 font-bold py-3 px-8 rounded-full text-lg transition transform hover:scale-105">
+                <a href="#howworks" class="bg-white hover:bg-gray-100 text-green-800 font-bold py-3 px-8 rounded-full text-lg transition transform hover:scale-105">
                     How It Works
                 </a>
             </div>
@@ -103,48 +141,111 @@
         </div>
     </section>
 
+
     <!-- How It Works Section -->
-    <section class="py-16 bg-green-50">
+    <section class="py-16 bg-green-50" id="howworks">
         <div class="container mx-auto px-6">
             <h2 class="title-font text-3xl md:text-4xl text-center text-green-800 mb-4">How It Works</h2>
-            <p class="text-center text-green-700 max-w-2xl mx-auto mb-12">Our simple 3-step process helps you reduce food waste and discover delicious recipes</p>
+            <p class="text-center text-green-700 max-w-2xl mx-auto mb-12">Our smart system helps you reduce food waste through recipe suggestions and inventory management</p>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Step 1 -->
                 <div class="feature-card bg-white p-8 rounded-xl shadow-md text-center">
                     <div class="feature-icon bg-green-100 w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-6">
                         <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-green-800 mb-3">1. Enter Your Ingredients</h3>
-                    <p class="text-green-700">Tell us what ingredients you have that need to be used up before they go bad.</p>
+                    <h3 class="text-xl font-bold text-green-800 mb-3">1. Track Your Inventory</h3>
+                    <p class="text-green-700">Add food items you have with expiry dates and categories. Our system organizes everything for you.</p>
                 </div>
                 
+                <!-- Step 2 -->
+                <div class="feature-card bg-white p-8 rounded-xl shadow-md text-center">
+                    <div class="feature-icon bg-green-100 w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-6">
+                        <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-green-800 mb-3">2. Get Smart Alerts</h3>
+                    <p class="text-green-700">Receive notifications days before items expire, and urgent alerts for expired or expiring-today items.</p>
+                </div>
+                
+                <!-- Step 3 -->
                 <div class="feature-card bg-white p-8 rounded-xl shadow-md text-center">
                     <div class="feature-icon bg-green-100 w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-6">
                         <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-green-800 mb-3">2. Get Personalized Recipes</h3>
-                    <p class="text-green-700">Our smart algorithm finds delicious recipes that match your available ingredients.</p>
+                    <h3 class="text-xl font-bold text-green-800 mb-3">3. Get Recipe Suggestions</h3>
+                    <p class="text-green-700">Our algorithm finds perfect recipes using your soon-to-expire ingredients.</p>
                 </div>
                 
+                <!-- Step 4 -->
                 <div class="feature-card bg-white p-8 rounded-xl shadow-md text-center">
                     <div class="feature-icon bg-green-100 w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-6">
                         <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-green-800 mb-3">3. Save Money & Planet</h3>
-                    <p class="text-green-700">Enjoy your meal knowing you've reduced waste and saved money on groceries.</p>
+                    <h3 class="text-xl font-bold text-green-800 mb-3">4. Save & Enjoy</h3>
+                    <p class="text-green-700">Reduce waste, save money, and enjoy delicious meals made from ingredients you already have.</p>
+                </div>
+            </div>
+
+            <!-- Inventory Visualization -->
+            <div class="mt-16 bg-white rounded-xl shadow-md p-8 animate_animated animate_fadeIn">
+                <h3 class="title-font text-2xl text-center text-green-800 mb-6">Smart Food Inventory Management</h3>
+                <div class="flex flex-col md:flex-row items-center">
+                    <!-- Changed width from 1/2 to 1/3 here -->
+                    <div class="md:w-1/4 mb-8 md:mb-0 md:pr-6">  <!-- Reduced padding from pr-8 to pr-6 -->
+                        <img src="{% static 'images/inventory-demo.png' %}" alt="Inventory Management" class="rounded-lg shadow-md w-full">
+                    </div>
+                    <div class="md:w-2/4">  <!-- Adjusted to 2/3 to compensate -->
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="bg-green-100 p-2 rounded-full mr-4 flex-shrink-0">
+                                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-green-800 mb-2">Expiry Tracking</h4>
+                                    <p class="text-green-700">Our system automatically tracks expiry dates and gives you warnings before food goes bad.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-green-100 p-2 rounded-full mr-4 flex-shrink-0">
+                                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-green-800 mb-2">Smart Notifications</h4>
+                                    <p class="text-green-700">Get alerts 3 days before expiration, and urgent notifications for items expiring today.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-green-100 p-2 rounded-full mr-4 flex-shrink-0">
+                                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-green-800 mb-2">Easy Updates</h4>
+                                    <p class="text-green-700">Mark items as used or expired with one click to keep your inventory current.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Featured Recipes Section -->
-    <section class="py-16 bg-white">
+    <section class="py-16 bg-white" id="recipes_sec">
         <div class="container mx-auto px-6">
             <h2 class="title-font text-3xl md:text-4xl text-center text-green-800 mb-4">Popular Zero-Waste Recipes</h2>
             <p class="text-center text-green-700 max-w-2xl mx-auto mb-12">Delicious dishes you can make with common leftover ingredients</p>
@@ -200,7 +301,7 @@
             </div>
             
             <div class="text-center mt-12">
-                <a href="#" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full text-lg transition transform hover:scale-105">
+                <a href="/login/" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full text-lg transition transform hover:scale-105">
                     Browse All Recipes
                 </a>
             </div>
@@ -365,7 +466,7 @@
             const animateOnScroll = function(entries, observer) {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                        entry.target.classList.add('animate_animated', 'animate_fadeInUp');
                         observer.unobserve(entry.target);
                     }
                 });
@@ -378,7 +479,37 @@
             document.querySelectorAll('.stats-item, .feature-card, .food-card').forEach(el => {
                 observer.observe(el);
             });
+
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const body = document.body;
+            
+            mobileMenuButton.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent this click from triggering the document click listener
+                mobileMenu.classList.toggle('hidden');
+                body.classList.toggle('mobile-menu-open');
+                
+                // Toggle aria-expanded attribute for accessibility
+                const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+                mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!mobileMenu.contains(event.target) && event.target !== mobileMenuButton) {
+                    mobileMenu.classList.add('hidden');
+                    body.classList.remove('mobile-menu-open');
+                    mobileMenuButton.setAttribute('aria-expanded', 'false');
+                }
+            });
+            
+            // Prevent clicks inside the menu from closing it
+            mobileMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
         });
+        
     </script>
 </body>
 </html>

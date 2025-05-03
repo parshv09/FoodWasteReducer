@@ -26,7 +26,7 @@ class FoodItems(models.Model):
         return f"{self.name} ({self.quantity})"
     
     def is_expiring_soon(self):
-        return (self.expiry_date - timezone.now().date()).days <= 3
+        return (self.expiry_date - timezone.now().date()).days <=4
     
     def days_until_expiry(self):
         return (self.expiry_date - timezone.now().date()).days

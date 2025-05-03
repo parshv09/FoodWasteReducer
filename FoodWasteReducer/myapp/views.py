@@ -44,8 +44,11 @@ def logout_view(request):
 @login_required 
 def navigation(request):
     saved_recipes = SavedRecipe.objects.filter(user=request.user).order_by('-id')
+    
+    food_items_count=FoodItems.objects.filter(user=request.user)
+    
     today = timezone.now().date()
-    next_week = today + timedelta(days=7)
+    next_week = today + timedelta(days=4)
 
     expiring_soon_items = FoodItems.objects.filter(
         user=request.user,
@@ -53,7 +56,9 @@ def navigation(request):
     ).order_by('expiry_date')
     return render(request, 'navigation.html', {
         'expiring_soon_items': expiring_soon_items,
+        'expiring_soon_count': expiring_soon_items.count(),
         "total_recipes":saved_recipes.count(),
+        "food_items_count":food_items_count.count(),
     })
 
 def privacy_policy(request):
