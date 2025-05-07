@@ -49,4 +49,58 @@ This project was built to solve a common real-world problem: **food waste** due 
 ---
 
 ## 📁 Project Structure
+FoodWasteReducer/
+├── myapp/ # Authentication and general pages
+├── recipe/ # Recipe suggestion logic
+├── inventory/ # Inventory management & email alerts
+├── templates/ # HTML templates
+├── static/ # CSS, JavaScript, and images
+├── manage.py
+├── requirements.txt
+└── README.md
+---
+
+## ⚙️ How to Run the Project
+
+1. **Clone the Repository**
+```bash
+git clone https://github.com/parshv09/FoodWasteReducer.git
+cd FoodWasteReducer
+```
+2.Create a Virtual Environment
+```bash
+python -m venv env
+source env/bin/activate  # On Windows use: env\Scripts\activate
+```
+3.Install Required Packages
+```bash
+pip install -r requirements.txt
+```
+4.Run Migrations
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+5.Start the Development Server
+```bash
+python manage.py runserver
+```
+6.Open in Browser 
+```bash
+http://127.0.0.1:8000/
+```
+📌 Future Improvements
+Barcode scanner integration for adding inventory items
+
+Multilingual support with live translation
+
+AI-based personalized recipe ranking
+
+Mobile app version
+
+
+Let me know if you’d like this in downloadable `.md` format or need help generating the screenshots section!
+
+
+
 
