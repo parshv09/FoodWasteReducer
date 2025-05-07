@@ -7,6 +7,7 @@ from recipes.models import SavedRecipe
 from inventory.models import FoodItems
 from django.utils import timezone
 from datetime import timedelta
+    
 
 def home(request):
     return render(request, 'index.html')
@@ -101,6 +102,8 @@ def profile(request):
         'debug': True  
     }
     return render(request, 'myapp/profile.html', context)
+
+
 
 def done(request):
     return render(request, 'done.html')
