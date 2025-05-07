@@ -49,16 +49,18 @@ This project was built to solve a common real-world problem: **food waste** due 
 ---
 
 ## 📁 Project Structure
+
+```bash
 FoodWasteReducer/
-├── myapp/ # Authentication and general pages
-├── recipe/ # Recipe suggestion logic
-├── inventory/ # Inventory management & email alerts
-├── templates/ # HTML templates
-├── static/ # CSS, JavaScript, and images
-├── manage.py
-├── requirements.txt
-└── README.md
----
+├── myapp/           # Authentication and general pages
+├── recipe/          # Recipe suggestion logic
+├── inventory/       # Inventory management & email alerts
+├── templates/       # HTML templates (shared across apps)
+├── static/          # CSS, JavaScript, and images
+├── manage.py        # Django project entry point
+├── requirements.txt # Project dependencies
+└── README.md        # Project documentation
+```
 
 ## ⚙️ How to Run the Project
 
