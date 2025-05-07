@@ -13,8 +13,8 @@ This project was built to solve a common real-world problem: **food waste** due 
 ## 🛠 Tech Stack
 
 - **Backend:** Django (Python)
-- **Frontend:** HTML, CSS, JavaScript (Django Templates)
-- **Database:** SQLite
+- **Frontend:** HTML, CSS(Tailwind), JavaScript (Django Templates)
+- **Database:** MySQL
 - **Authentication:** Django’s built-in Auth System
 - **Email Notifications:** Python’s SMTP
 - **Recipe API:** Public Recipe API (such as Spoonacular)
@@ -34,12 +34,12 @@ This project was built to solve a common real-world problem: **food waste** due 
 - Save your favorite recipes
 - View saved recipes anytime under your profile section
 
-### ✅ Inventory Module (NEW)
+### ✅ Inventory Module 
 - Track food items in your kitchen
 - Add items with quantity and expiry dates
 - View your inventory in an organized list
 
-### ✅ Daily Email Alerts (NEW)
+### ✅ Daily Email Alerts 
 - Receive daily emails warning you about food items nearing expiry
 - Promotes timely usage and reduces waste
 
