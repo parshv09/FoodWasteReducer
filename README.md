@@ -91,7 +91,8 @@ python manage.py runserver
 ```bash
 http://127.0.0.1:8000/
 ```
-📌 Future Improvements
+---
+##📌 Future Improvements
 Barcode scanner integration for adding inventory items
 
 Multilingual support with live translation
@@ -99,9 +100,9 @@ Multilingual support with live translation
 AI-based personalized recipe ranking
 
 Mobile app version
-
-
-Let me know if you’d like this in downloadable `.md` format or need help generating the screenshots section!
+---
+##👨‍💻 Author
+Parshv Athane
 
 
 
