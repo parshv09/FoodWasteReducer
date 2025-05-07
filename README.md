@@ -92,16 +92,7 @@ python manage.py runserver
 http://127.0.0.1:8000/
 ```
 ---
-###📌 Future Improvements
-Barcode scanner integration for adding inventory items
-
-Multilingual support with live translation
-
-AI-based personalized recipe ranking
-
-Mobile app version
----
-###👨‍💻 Author
+### 👨‍💻 Author
 Parshv Athane
 
 
