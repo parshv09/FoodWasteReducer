@@ -24,5 +24,5 @@ urlpatterns = [
     path('', include('myapp.urls')),  # Connect app URLs
     path('recipes/',include('recipes.urls')),
     path('inventory/', include('inventory.urls')),
-    
+    path('inventory_dashboard/',inventory_views.inventory_dashboard,name='inventory_dashboard'),
 ]

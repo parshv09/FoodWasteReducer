@@ -33,27 +33,61 @@
 </head>
 <body class="min-h-screen flex flex-col">
     <!-- Header -->
-    <header class="bg-green-800 text-white shadow-lg">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <img src="{% static 'images/logo-White.png' %}" alt="Food Waste Reducer Logo" class="h-10 w-10">
-                    <h1 class="title-font text-xl md:text-2xl font-bold">Food Waste Reducer</h1>
-                </div>
-                <div class="flex items-center space-x-6">
-                    <a href="{% url 'profile' %}" class="hidden md:block text-green-100 hover:text-white transition">{% if request.session.username %}
-                        <div class="greeting">Hi, {{ request.session.username }} 👋</div>
-                    {% endif %}</a>
-                    <a href="{% url 'logout' %}" class="flex items-center space-x-1 bg-green-700 hover:bg-green-600 px-4 py-2 rounded-lg transition">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                        </svg>
-                        <span>Logout</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </header>
+<header class="bg-green-800 text-white shadow-lg w-full animate__animated animate__fadeInDown">
+  <div class="container mx-auto px-6 py-4">
+    <div class="flex items-center justify-between">
+      <!-- Logo and Title (matches original sizing) -->
+      <div class="flex items-center space-x-4">
+        <img src="{% static 'images/logo-White.png' %}" alt="Food Waste Reducer Logo" 
+             class="h-10 w-10 animate__animated animate__pulse animate__infinite">
+        <h1 class="title-font text-xl md:text-2xl font-bold">Food Waste Reducer</h1>
+      </div>
+
+      <!-- Desktop Navigation (matches original alignment) -->
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="{% url 'navigation' %}" class="text-green-100 hover:text-white transition">Home</a>
+        {% if request.session.username %}
+        <a href="{% url 'profile' %}" class="text-green-100 hover:text-white transition">
+          Hi, {{ request.session.username }} 👋
+        </a>
+        {% endif %}
+        <a href="{% url 'logout' %}" class="flex items-center space-x-1 bg-green-700 hover:bg-green-600 px-4 py-2 rounded-lg transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+          </svg>
+          <span>Logout</span>
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden">
+        <button id="mobile-menu-button" class="text-white focus:outline-none">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2 space-y-3">
+      <a href="{% url 'navigation' %}" class="block px-4 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded transition">Home</a>
+      {% if request.session.username %}
+      <a href="{% url 'profile' %}" class="block px-4 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded transition">
+        Hi, {{ request.session.username }} 👋
+      </a>
+      <a href="{% url 'logout' %}" class="flex items-center space-x-2 px-4 py-2 bg-green-700 hover:bg-green-600 rounded-lg transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+        </svg>
+        <span>Logout</span>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+
 
     <!-- Main Content -->
     <main class="flex-grow py-8">
@@ -373,4 +407,10 @@
         </div>
     </footer>
 </body>
+<script>
+      document.getElementById('mobile-menu-button').addEventListener('click', function() {
+    const menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('hidden');
+  });
+</script>
 </html>
