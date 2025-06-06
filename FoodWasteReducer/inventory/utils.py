@@ -31,6 +31,9 @@ def send_expiry_notifications():
             elif days_left <= 4:
                 urgency = "tomorrow" if days_left == 1 else f"in {days_left} days"
                 urgent.append(line + f"expiring {urgency} (on {formatted_date})")
+            elif days_left == 0:
+                 urgency = "today" if days_left == 0 else f"in {days_left} days"
+                 urgent.append(line + f"expiring {urgency} (on {formatted_date})")
             else:
                 upcoming_list.append(line + f"expiring in {days_left} days (on {formatted_date})")
 
