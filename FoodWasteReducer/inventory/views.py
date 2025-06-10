@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import FoodItems
 from django.utils import timezone
-from django.core.paginator import Paginator
-from django.db.models import Q
+from django.core.paginator import Paginator,EmptyPage
+
 
 @login_required
 def inventory_dashboard(request):
@@ -12,36 +12,34 @@ def inventory_dashboard(request):
         today = timezone.now().date()
         query = request.GET.get('search', '')
         category_filter = request.GET.get('category', '')
-        sort_by = request.GET.get('sort', 'expiry_date')  # default sort
+        sort_by = request.GET.get('sort', 'expiry_date')
 
         food_items = FoodItems.objects.filter(user=request.user)
 
-        # Search
         if query:
             food_items = food_items.filter(name__icontains=query)
 
-        # Category Filter
         if category_filter and category_filter != 'ALL':
             food_items = food_items.filter(category=category_filter)
 
-        # Sorting
         if sort_by == 'name':
             food_items = food_items.order_by('name')
         elif sort_by == 'date_added':
             food_items = food_items.order_by('-added_date')
-        else:  # default to expiry_date
+        else:
             food_items = food_items.order_by('expiry_date')
 
-        # Stats
         total_items = food_items.count()
         expiring_soon = [item for item in food_items if item.is_expiring_soon()]
         expired_count = food_items.filter(expiry_date__lt=today).count()
         category_count = food_items.values('category').distinct().count()
 
-        # Pagination
         paginator = Paginator(food_items, 4)
         page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
+        try:
+            page_obj = paginator.get_page(page_number)
+        except EmptyPage:
+            page_obj = paginator.get_page(paginator.num_pages)
 
     except Exception as e:
         messages.error(request, f"Error loading inventory: {str(e)}")

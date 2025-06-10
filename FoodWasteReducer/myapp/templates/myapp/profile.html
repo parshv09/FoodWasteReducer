@@ -49,35 +49,79 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="bg-green-800 text-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <img src="{% static 'images/logo-white.png' %}" alt="Logo" class="h-10 w-10">
-                    <h1 class="title-font text-xl md:text-2xl font-bold">Food Waste Reducer</h1>
-                </div>
-                <nav class="hidden md:flex items-center space-x-6">
-                    <a href="{% url 'home' %}" class="text-green-100 hover:text-white transition">Home</a>
-                    <a href="{% url 'food_details' %}" class="text-green-100 hover:text-white transition">Recipes</a>
-                    <a href="{% url 'profile' %}" class="text-green-100 hover:text-white font-medium">My Profile</a>
-                    <a href="{% url 'logout' %}" class="text-green-100 hover:text-white transition">Logout</a>
-                </nav>
-            </div>
-        </div>
-    </header>
+   <!-- Header -->
+<header class="bg-green-800 text-white shadow-lg w-full animate__animated animate__fadeInDown">
+  <div class="container mx-auto px-6 py-4">
+    <div class="flex items-center justify-between">
+      <!-- Logo and Title (matches original sizing) -->
+      <div class="flex items-center space-x-4">
+        <img src="{% static 'images/logo-White.png' %}" alt="Food Waste Reducer Logo" 
+             class="h-10 w-10 animate__animated animate__pulse animate__infinite">
+        <h1 class="title-font text-xl md:text-2xl font-bold">Food Waste Reducer</h1>
+      </div>
+
+      <!-- Desktop Navigation (matches original alignment) -->
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="{% url 'navigation' %}" class="text-green-100 hover:text-white transition">Home</a>
+       
+        <a href="{% url 'inventory_dashboard' %}" class="text-green-100 hover:text-white transition">
+            Inventory
+        </a>
+        <a href="{% url 'food_details' %}" class="text-green-100 hover:text-white transition">
+            Recipe
+        </a>
+        <a href="{% url 'logout' %}" class="flex items-center space-x-1 bg-green-700 hover:bg-green-600 px-4 py-2 rounded-lg transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+          </svg>
+          <span>Logout</span>
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden">
+        <button id="mobile-menu-button" class="text-white focus:outline-none">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2 space-y-3">
+      <a href="{% url 'navigation' %}" class="block px-4 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded transition">Home</a>
+      
+      <a href="{% url 'inventory_dashboard' %}" class="block px-4 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded transition">
+        Inventory
+      </a>
+      <a href="{% url 'food_details' %}" class="block px-4 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded transition">
+        Recipe
+      </a>
+      <a href="{% url 'logout' %}" class="flex items-center space-x-2 px-4 py-2 bg-green-700 hover:bg-green-600 rounded-lg transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+        </svg>
+        <span>Logout</span>
+      </a>
+     
+    </div>
+  </div>
+</header>
 
     <!-- Profile Section -->
     <section class="py-8 bg-white">
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row items-center gap-8 mb-12">
                 <div class="relative">
+                    <a href="{% url 'update_profile' %}" >
                     <img src="{% static 'images/user_profile.png' %}" alt="User" class="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-white shadow-lg">
                     <button class="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-md">
                         <svg class="w-4 h-4 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                         </svg>
                     </button>
+                </a>
                 </div>
                 <div>
                     <h2 class="title-font text-2xl md:text-3xl font-bold text-gray-800">{{ request.user.username }}</h2>
@@ -175,4 +219,10 @@
         </div>
     </footer>
 </body>
+<script>
+      document.getElementById('mobile-menu-button').addEventListener('click', function() {
+    const menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('hidden');
+  });
+</script>
 </html>

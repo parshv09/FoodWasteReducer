@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile | Food Waste Reducer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #4caf50;
+            --primary-dark: #1b5e20;
+            --secondary: #ff9800;
+            --text: #333333;
+            --text-light: #5a5a5a;
+            --background: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background);
+        }
+        
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-green-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <img src="{% static 'images/logo-white.png' %}" alt="Logo" class="h-10 w-10">
+                    <h1 class="title-font text-xl md:text-2xl font-bold">Food Waste Reducer</h1>
+                </div>
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="{% url 'home' %}" class="text-green-100 hover:text-white transition">Home</a>
+                    <a href="{% url 'food_details' %}" class="text-green-100 hover:text-white transition">Recipes</a>
+                    <a href="{% url 'profile' %}" class="text-green-100 hover:text-white font-medium">My Profile</a>
+                    <a href="{% url 'logout' %}" class="text-green-100 hover:text-white transition">Logout</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Update Profile Section -->
+    <section class="py-12">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <div class="bg-white rounded-xl shadow-md overflow-hidden p-8">
+                <div class="text-center mb-8">
+                    <h2 class="title-font text-3xl font-bold text-gray-800">Update Your Profile</h2>
+                    <p class="text-gray-600 mt-2">Edit your account information below</p>
+                </div>
+                
+                <form method="POST" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <!-- Username -->
+                    <div>
+                        <label for="id_username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                        <input type="text" name="username" id="id_username" 
+                               value="{{ form.username.value }}" 
+                               class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                        {% if form.username.errors %}
+                            <div class="text-red-500 text-sm mt-1">{{ form.username.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Email -->
+                    <div>
+                        <label for="id_email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" name="email" id="id_email" 
+                               value="{{ form.email.value }}" 
+                               class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                        {% if form.email.errors %}
+                            <div class="text-red-500 text-sm mt-1">{{ form.email.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- First Name -->
+                    <div>
+                        <label for="id_first_name" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                        <input type="text" name="first_name" id="id_first_name" 
+                               value="{{ form.first_name.value|default_if_none:'' }}" 
+                               class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                    </div>
+                    
+                    <!-- Last Name -->
+                    <div>
+                        <label for="id_last_name" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                        <input type="text" name="last_name" id="id_last_name" 
+                               value="{{ form.last_name.value|default_if_none:'' }}" 
+                               class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                    </div>
+                    
+                    <!-- Form Actions -->
+                    <div class="flex flex-col sm:flex-row justify-between gap-4 pt-6">
+                        <a href="{% url 'profile' %}" class="btn bg-gray-200 text-gray-800 hover:bg-gray-300 text-center py-2 px-6 rounded-lg transition">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn-primary text-white font-medium py-2 px-6 rounded-lg shadow-md">
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-green-900 text-green-100 py-8">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                    <img src="{% static 'images/logo-white.png' %}" alt="Logo" class="h-8 w-8">
+                    <span class="title-font">Food Waste Reducer</span>
+                </div>
+                <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-sm">
+                    <a href="{% url 'about' %}" class="hover:text-white transition">About</a>
+                    <a href="{% url 'privacy' %}" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="mailto:foodreducer@gmail.com" class="hover:text-white transition">Contact Us</a>
+                </div>
+            </div>
+            <div class="mt-6 text-center text-xs text-green-300">
+                &copy; 2023 Food Waste Reducer. All rights reserved.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
