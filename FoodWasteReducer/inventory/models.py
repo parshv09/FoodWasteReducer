@@ -1,6 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.utils import timezone
+
 
 def default_expiry_date():
     return timezone.now().date() + timezone.timedelta(days=7)
@@ -15,7 +16,7 @@ class FoodItems(models.Model):
         ('OTHER', 'Other'),
     ]
     
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     quantity = models.PositiveIntegerField(default=1)  # Changed from CharField
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='OTHER')

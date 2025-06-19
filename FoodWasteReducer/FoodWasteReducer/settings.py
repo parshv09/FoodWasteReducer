@@ -14,6 +14,7 @@ from pathlib import Path
 import pymysql
 pymysql.install_as_MySQLdb()
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -160,4 +161,5 @@ EMAIL_HOST_USER = 'develoer22@gmail.com'
 EMAIL_HOST_PASSWORD = 'cqpi ojpg myir ywet'  
 
 
+AUTH_USER_MODEL = 'myapp.CustomUser'
 

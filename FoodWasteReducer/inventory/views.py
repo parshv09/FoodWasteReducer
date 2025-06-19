@@ -4,7 +4,9 @@ from django.contrib import messages
 from .models import FoodItems
 from django.utils import timezone
 from django.core.paginator import Paginator,EmptyPage
-
+#from .utils1 import send_sms
+#from django.http import HttpResponse
+#from django.contrib.auth import get_user_model
 
 @login_required
 def inventory_dashboard(request):
@@ -60,6 +62,20 @@ def inventory_dashboard(request):
     })
 
 
+
+'''
+def broadcast_sms(request):
+
+    User = get_user_model()
+    users = User.objects.exclude(mobile_number__isnull=True).exclude(mobile_number__exact='')
+    
+    phone_numbers = [user.mobile_number for user in users]
+    
+    message = "🚨 Reminder from FWRWRS: Some food items in your inventory may expire soon. Check now!"
+    
+    response = send_sms(phone_numbers, message)
+    return HttpResponse(str(response))
+'''
 
 @login_required
 def add_food(request):

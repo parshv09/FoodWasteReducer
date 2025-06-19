@@ -25,4 +25,5 @@ urlpatterns = [
     path('recipes/',include('recipes.urls')),
     path('inventory/', include('inventory.urls')),
     path('inventory_dashboard/',inventory_views.inventory_dashboard,name='inventory_dashboard'),
+    #path("test-sms/", inventory_views.broadcast_sms, name="send_expiry_alerts"),
 ]

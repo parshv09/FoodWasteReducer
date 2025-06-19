@@ -1,10 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 
 
 class SavedRecipe(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     recipe_id = models.CharField(max_length=100, blank=False, null=False)  # from API
     title = models.CharField(max_length=255)
     image_url = models.URLField()
